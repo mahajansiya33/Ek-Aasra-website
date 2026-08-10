@@ -1483,6 +1483,59 @@ footer#main-footer {
 .developer-credit strong {
     color: #ffffff;
 }
+
+/* Fix horizontal scrolling on mobile */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Mobile responsive styles for screens under 768px */
+@media screen and (max-width: 768px) {
+    /* Header layout adjustment */
+    header {
+        flex-direction: column;
+        padding: 10px 15px !important;
+        align-items: center;
+    }
+
+    /* Logo adjustment */
+    .logo-container, .logo {
+        margin-bottom: 8px;
+    }
+
+    /* Navigation links wrap neatly or stack */
+    nav, .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 12px;
+        width: 100%;
+    }
+
+    nav a, .nav-links a {
+        font-size: 0.85rem !important;
+        padding: 4px 6px !important;
+    }
+
+    /* Donate Button */
+    .donate-btn, header .btn {
+        margin-top: 8px;
+        padding: 6px 16px !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Hero Section Text Adjustments */
+    .hero h1, #about h1 {
+        font-size: 1.75rem !important;
+        padding: 0 10px;
+    }
+
+    .hero p, #about p {
+        font-size: 0.95rem !important;
+        padding: 0 15px;
+    }
+}
     </style>
        
    
