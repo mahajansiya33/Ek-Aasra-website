@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ek Aasra Welfare Society</title>
+
+    <!-- Google Font for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        :root {
+            --primary-red: #A82226;
+            --primary-blue: #232B68;
+            --light-bg: #FAF9F6;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Background image setup */
+            background-image: url('/static/paw3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- STICKY & TRANSPARENT NAVBAR --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 8%;
+            position: fixed; /* Keep navbar stuck at top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: transparent; /* Starts fully transparent */
+            transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.3s ease;
+        }
+
+        header.scrolled {
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 8%; /* Slightly shrinks height on scroll */
+        }
+
+        header div {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        header div span {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-red);
+        }
+
+        /* --- NAV LINK HOVER ANIMATION --- */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a.nav-link {
+            position: relative;
+            margin-left: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+
+        nav a.nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-red);
+            transition: width 0.3s ease-in-out;
+        }
+
+        nav a.nav-link:hover::after {
+            width: 100%;
+        }
+
+        nav a.nav-link:hover {
+            color: var(--primary-red);
+        }
+
+        /* --- DONATE BUTTON PULSE ANIMATION --- */
+        nav a.btn-donate-pulse {
+            margin-left: 20px;
+            text-decoration: none;
+            background-color: var(--primary-red);
+            color: white !important;
+            padding: 9px 22px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-block;
+            animation: pulse 2s infinite;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        nav a.btn-donate-pulse:hover {
+            background-color: #83181b;
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(168, 34, 38, 0.6);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(168, 34, 38, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(168, 34, 38, 0);
+            }
+        }
+
+        /* --- HERO BANNER (#about) --- */
+        section#about {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            
+            max-width: 1200px;
+            margin: 100px auto 30px auto; /* 100px top margin so it doesn't get covered by fixed navbar */
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 80px 40px;
+
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/pic13.jpeg');
+            background-size: cover;
+            background-position: center;
+
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        section#about h1 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        section#about p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+        }
+
+        section#about a {
+            display: inline-block;
+            background-color: var(--primary-red);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        section#about a:hover {
+            transform: translateY(-2px);
+            background-color: #83181b;
+        }
+
+        /* --- MISSION CARD --- */
+        #mission-card, .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        #mission-card {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.855);
+            color: maroon;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #mission-card h2 {
+            font-size: 1.05rem;
+            color: maroon;
+            margin: 1rem 0;
+        }
+
+        .mission-text {
+            max-width: 760px;
+            margin: 0 auto 2rem auto;
+            color: #333333;
+            font-size: 1.12rem;
+            font-weight: 600;
+        }
+
+        /* --- MISSION FEATURES & ICONS --- */
+        .mission-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0 3rem 0;
+        }
+
+        .feature-item {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.1rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.4rem;
+        }
+
+        .feature-item p {
+            font-size: 0.85rem;
+            color: #555555;
+            line-height: 1.4;
+        }
+
+        /* --- JOURNEY TIMELINE --- */
+        .timeline-container {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Central Timeline Line */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary-blue);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 10px 30px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        /* Dots on the Timeline */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            background-color: #ffffff;
+            border: 4px solid var(--primary-red);
+            top: 20px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .left {
+            left: 0;
+            text-align: right;
+        }
+
+        .right {
+            left: 50%;
+            text-align: left;
+        }
+
+        .right::after {
+            left: -8px;
+        }
+
+        .timeline-content {
+            padding: 15px 20px;
+            background-color: #ffffff;
+            position: relative;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eaeaea;
+        }
+
+        .timeline-year {
+            display: inline-block;
+            background: var(--primary-red);
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content h4 {
+            font-size: 1.05rem;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+
+        .timeline-content p {
+            font-size: 0.88rem;
+            color: #555555;
+            line-height: 1.4;
+        }
+
+        /* --- GRID & CARDS STYLING --- */
+        #animal-welfare, #human-welfare {
+            grid-column: 1 / -1;
+            padding: 1rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .category-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .red-tag { background: #fee2e2; color: var(--primary-red); }
+        .blue-tag { background: #e0e7ff; color: var(--primary-blue); }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1.8rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card h3 {
+            font-size: 1.15rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+            font-size: 0.9rem;
+            color: #555555;
+            line-height: 1.5;
+        }
+
+        /* --- MAIN LAYOUT GRID --- */
+        main {
+            padding: 3rem 8%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* --- FULL-WIDTH SECTIONS --- */
+        #gallery, #video-section {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            padding: 2rem;
+            border-top: 5px solid var(--primary-blue);
+            text-align: center;
+        }
+
+        #gallery h2, #video-section h2 {
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .section-subtext {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+            border: 1px solid #eee;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .gallery-card p {
+            padding: 12px 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+       /* --- INSTAGRAM SECTION STYLES --- */
+#instagram-section {
+    grid-column: 1 / -1;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    border-top: 5px solid #E1306C; /* Instagram Pink Accent */
+    margin-top: 2rem;
+}
+
+.insta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.insta-card {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f0f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.insta-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.insta-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.insta-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.insta-card:hover .insta-thumbnail img {
+    transform: scale(1.05);
+}
+
+/* Play button hover overlay */
+.insta-play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.9;
+    transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+.insta-card:hover .insta-play-overlay {
+    background: rgba(225, 48, 108, 0.7); /* Instagram gradient feel */
+}
+
+.insta-play-overlay i {
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+}
+
+.insta-play-overlay span {
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.insta-info {
+    padding: 16px;
+}
+
+.insta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    color: #E1306C;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.insta-link:hover {
+    text-decoration: underline;
+}
+/* Center and space out the filter button container */
+.video-filter-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Style the individual filter buttons */
+.video-btn {
+    background-color: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* Hover & Active Selected State */
+.video-btn:hover, 
+.video-btn.active {
+    background-color: #a82226; /* Matches your dark red accent */
+    color: #ffffff;
+    border-color: #a82226;
+    box-shadow: 0 4px 12px rgba(168, 34, 38, 0.25);
+}
+.red-badge { background: #fee2e2; color: var(--primary-red); }
+.blue-badge { background: #e0e7ff; color: var(--primary-blue); }
+.green-badge { background: #dcfce7; color: #15803d; }
+
+
+
+        main section:not(#gallery):not(#video-section) {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            padding: 2rem;
+            border-top: 5px solid var(--primary-red);
+        }
+
+        main section h2 {
+            font-size: 1.3rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        #donate div {
+            text-align: center;
+        }
+
+        #donate img {
+            border-radius: 10px;
+            border: 1px solid #eee;
+            padding: 8px;
+            background: #fff;
+            margin-bottom: 1rem;
+        }
+
+        /* Volunteer Section Layout */
+.volunteer-section {
+    padding: 3rem 1.5rem;
+    background-color: #f8fafc;
+}
+
+.volunteer-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Header Styling */
+.section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.category-tag {
+    display: inline-block;
+    background: #e0e7ff;
+    color: #1e3a8a;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.section-header h2 {
+    color: #1e3a8a;
+    font-size: 2rem;
+    margin: 5px 0 10px;
+}
+
+.section-header p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Form Card Container */
+.volunteer-form-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+}
+
+/* Button Styling */
+.submit-volunteer-btn {
+    width: 100%;
+    background-color: #1e3a8a;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.submit-volunteer-btn:hover {
+    background-color: #172554;
+    transform: translateY(-1px);
+}
+
+        #contacts ul {
+            list-style: none;
+        }
+
+        #contacts li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        #contacts li:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            background: var(--primary-blue);
+            color: white;
+            text-align: center;
+            padding: 2rem 8%;
+            margin-top: 2rem;
+        }
+
+        .emergency-notice {
+            background: #fff3cd;
+            color: #856404;
+            padding: 8px 15px;
+            text-align: center;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #ffeeba;
+        }
+
+        .emergency-notice a {
+            color: var(--primary-red);
+            font-weight: bold;
+        }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            nav a.nav-link {
+                margin: 0 8px;
+                font-size: 0.85rem;
+            }
+
+            section#about h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 2rem 5%;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 15px;
+            }
+
+            .timeline-item.left,
+            .timeline-item.right {
+                left: 0%;
+                text-align: left;
+            }
+
+            .timeline-item::after {
+                left: 23px;
+            }
+        }
+        /* --- IMPACT STATISTICS SECTION --- */
+#stats-section {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--primary-blue), #181e4b) !important;
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: none !important;
+    box-shadow: 0 10px 25px rgba(35, 43, 104, 0.2);
+}
+
+#stats-section h2 {
+    color: #ffffff !important;
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+}
+
+#stats-section .section-subtext {
+    color: #cbd5e1;
+    margin-bottom: 2.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    padding: 1.8rem 1rem;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #ffd700; /* Gold highlight */
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+        /* --- MASONRY GALLERY STYLING --- */
+#gallery {
+    grid-column: 1 / -1;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    padding: 2.5rem 2rem;
+    border-top: 5px solid var(--primary-blue);
+    text-align: center;
+}
+
+/* Gallery Filter Buttons */
+.gallery-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 2rem;
+}
+
+.filter-btn {
+    background: #f1f5f9;
+    color: var(--text-color);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary-red);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(168, 34, 38, 0.25);
+}
+
+/* --- FIXED GALLERY GRID --- */
+.masonry-grid {
+    column-count: 3;
+    column-gap: 20px;
+}
+
+.masonry-item {
+    break-inside: avoid;
+    display: inline-block; /* Crucial for CSS column layout to prevent overlap */
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;    /* Keeps the overlay attached ONLY to this card */
+    border-radius: 14px;
+    overflow: hidden;      /* Clips overflowing overlays & images cleanly */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    background: #000;
+}
+
+.masonry-item img {
+    width: 100%;
+    height: auto;
+    display: block;        /* Removes inline whitespace under images */
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.masonry-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Overlay alignment */
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+    color: #ffffff;
+    text-align: left;
+    z-index: 2;
+}
+
+.gallery-badge {
+    background: #A82226;
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.gallery-overlay p {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Masonry Mobile Responsiveness */
+@media (max-width: 900px) {
+    .masonry-grid {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .masonry-grid {
+        column-count: 1;
+    }
+}
+
+/* --- PROFESSIONAL FOOTER STYLES --- */
+footer#main-footer {
+    background-color: var(--primary-blue);
+    color: #e2e8f0;
+    padding: 4rem 8% 0 8%;
+    margin-top: 4rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 3rem;
+}
+
+.footer-col h4 {
+    color: #ffffff;
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.footer-col h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 35px;
+    height: 3px;
+    background-color: var(--primary-red);
+    border-radius: 2px;
+}
+
+/* Col 1: Logo & Compliance */
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.footer-logo img {
+    height: 40px;
+    width: auto;
+    border-radius: 6px;
+    background: #fff;
+    padding: 2px;
+}
+
+.footer-logo h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.footer-about-text {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    margin-bottom: 1.2rem;
+}
+
+.compliance-box {
+    background: rgba(255, 255, 255, 0.08);
+    border-left: 3px solid var(--primary-red);
+    padding: 10px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #e2e8f0;
+}
+
+.compliance-box p {
+    margin-bottom: 2px;
+}
+
+.compliance-box p strong {
+    color: #ffd700;
+}
+
+/* Col 2: Links */
+.links-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.links-col li {
+    margin-bottom: 8px;
+}
+
+.links-col a {
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    display: inline-block;
+}
+
+.links-col a:hover {
+    color: #ffffff;
+    padding-left: 5px;
+}
+
+/* Col 3: Contact & Social */
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.88rem;
+    color: #cbd5e1;
+}
+
+.contact-list .icon {
+    font-size: 1rem;
+}
+
+.social-title {
+    margin-top: 1rem;
+    margin-bottom: 0.8rem !important;
+}
+
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.social-links a {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.social-links a:hover {
+    background: var(--primary-red);
+    transform: translateY(-2px);
+}
+
+/* Col 4: Map Container */
+.map-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Bottom Bar */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* Mobile Responsiveness for Footer */
+@media (max-width: 768px) {
+    footer#main-footer {
+        padding: 3rem 5% 0 5%;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+/* --- DONATE SECTION & IMPACT TIERS --- */
+#donate {
+    grid-column: 1 / -1;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    padding: 2.5rem 2rem;
+    border-top: 5px solid var(--primary-red) !important;
+    text-align: center;
+}
+
+#donate h2 {
+    font-size: 1.6rem;
+    color: var(--primary-blue);
+    margin-bottom: 0.3rem;
+}
+
+/* Impact Tiers Grid */
+.donation-tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin: 2rem 0 2.5rem 0;
+}
+
+.tier-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1.5rem 1rem;
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tier-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-red);
+    box-shadow: 0 8px 20px rgba(168, 34, 38, 0.12);
+}
+
+/* Highlighted Popular Tier */
+.featured-tier {
+    border-color: var(--primary-red);
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(168, 34, 38, 0.1);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-red);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+}
+
+.tier-amount {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-red);
+    margin-bottom: 0.3rem;
+}
+
+.tier-card h3 {
+    font-size: 1.05rem;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.tier-card p {
+    font-size: 0.85rem;
+    color: #555555;
+    line-height: 1.4;
+}
+
+/* QR & Bank Details Box */
+.qr-donation-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    background: #FAF9F6;
+    border-radius: 14px;
+    padding: 2rem;
+    border: 1px solid #eee;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.qr-code-wrapper img {
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.qr-hint {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.bank-details {
+    text-align: left;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.bank-details h4 {
+    color: var(--primary-blue);
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.bank-details p {
+    margin-bottom: 6px;
+}
+
+.bank-details code {
+    background: #e2e8f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: 600;
+    color: var(--primary-red);
+}
+
+.tax-note {
+    margin-top: 10px !important;
+    font-size: 0.82rem;
+    color: #15803d;
+    font-weight: 600;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .qr-donation-box {
+        flex-direction: column;
+        text-align: center;
+    }
+    .bank-details {
+        text-align: center;
+    }
+}
+
+/* --- CELEBRATE SPECIAL OCCASIONS --- */
+.celebrate-sponsorship {
+    background: linear-gradient(135deg, #fff5f5, #fef2f2);
+    border: 2px dashed var(--primary-red);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2.5rem 0;
+    text-align: center;
+}
+
+.celebrate-badge {
+    background: var(--primary-red);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.celebrate-header h3 {
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 0.3rem;
+}
+
+.celebrate-header p {
+    font-size: 0.95rem;
+    color: #555555;
+    max-width: 650px;
+    margin: 0 auto 1.8rem auto;
+}
+
+/* Cards Layout */
+.celebrate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+}
+
+.celebrate-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.4rem 1rem;
+    border: 1px solid #fecaca;
+    box-shadow: 0 4px 12px rgba(168, 34, 38, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.celebrate-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(168, 34, 38, 0.12);
+}
+
+.celebrate-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.celebrate-card h4 {
+    font-size: 1.05rem;
+    color: var(--primary-blue);
+    margin-bottom: 0.4rem;
+}
+
+.celebrate-card p {
+    font-size: 0.85rem;
+    color: #555555;
+    line-height: 1.4;
+}
+
+/* Call to Action Button */
+.celebrate-cta {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid #fee2e2;
+}
+
+.celebrate-cta p {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin: 0;
+    text-align: left;
+}
+
+.btn-celebrate {
+    background-color: var(--primary-red);
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.btn-celebrate:hover {
+    background-color: #83181b;
+    transform: scale(1.03);
+}
+
+@media (max-width: 600px) {
+    .celebrate-cta {
+        flex-direction: column;
+        text-align: center;
+    }
+    .celebrate-cta p {
+        text-align: center;
+    }
+}
+
+.developer-credit {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+}
+
+.developer-credit strong {
+    color: #ffffff;
+}
+    </style>
+       
+   
+
+
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div>
+            <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Ek Aasra Logo">
+            <span>EK AASRA</span>
+        </div>
+        <nav>
+            <a href="#about" class="nav-link">About Us</a>
+            <a href="#animal-welfare" class="nav-link">Animal Welfare</a>
+            <a href="#human-welfare" class="nav-link">Human Welfare</a>
+            <a href="#gallery" class="nav-link">Impact Gallery</a>
+            <a href="#video-section" class="nav-link">Rescues</a>
+            <a href="#contacts" class="nav-link">Contacts</a>
+            <a href="#donate" class="btn-donate-pulse">Donate</a>
+        </nav>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section id="about">
+        <h1>Welcome to Ek Aasra</h1>
+        <p>Extending a Helping Hand to Every Soul in Need</p>
+        <a href="#donate">Support Our Cause</a>
+    </section>
+
+    <!-- Main Content Area -->
+    <main>
+
+        <!-- Mission Card Section -->
+        <section id="mission-card" class="card">
+            <span class="badge">OUR MISSION</span>
+            <h2>Paws & Hearts: Driving Compassionate Action</h2>
+            
+            <p class="mission-text">
+                At <strong>Ek Aasra</strong>,  our mission is to build a more compassionate and inclusive society where every life is valued, protected, and empowered. We are dedicated to extending care beyond boundaries by providing free of cost life-saving support to injured and abandoned animals while uplifting individuals and families through healthcare assistance, community welfare, environmental stewardship, and humanitarian initiatives. Guided by empathy, integrity, and selfless service, we strive to create lasting change and inspire a culture of kindness, responsibility, and hope for every living being.
+
+        <!-- Impact Statistics Section -->
+<section id="stats-section">
+    <h2>Our Impact in Numbers</h2>
+    <p class="section-subtext">Every number represents a life touched, rescued, or transformed.</p>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-number" data-target="2500" data-suffix="+">0</span>
+            <p class="stat-label">Animals Rescued 🐾</p>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number" data-target="500" data-suffix="+">0</span>
+            <p class="stat-label">Medical Treatments 🚑</p>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number" data-target="300" data-suffix="+">0</span>
+            <p class="stat-label">Active Volunteers 🤝</p>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number" data-target="70" data-suffix="+">0</span>
+            <p class="stat-label">Families Supported 🏠</p>
+        </div>
+       
+    </div>
+</section>
+
+            <!-- Impact Icons Grid -->
+            <div class="mission-features">
+                <div class="feature-item">
+                    <span class="feature-icon">❤️</span>
+                    <h3>Compassion</h3>
+                    <p>Spreading empathy and direct care to those who need it most.</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🐾</span>
+                    <h3>Animal Rescue</h3>
+                    <p>Providing 24/7 medical aid, shelter, and rehabilitation for strays.</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🤝</span>
+                    <h3>Community Support</h3>
+                    <p>Distributing food, clothing, and essential services across local areas.</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🌱</span>
+                    <h3>Environment</h3>
+                    <p>Fostering eco-conscious drives and sustainable community living.</p>
+                </div>
+            </div>
+
+            
+
+        <section id="animal-welfare">
+    <div class="section-header">
+        <span class="category-tag red-tag">ANIMAL WELFARE</span>
+        <h2>Paws & Protection</h2>
+    </div>
+    <div class="cards-grid">
+        <!-- Card 1: Free Medical Aid & Surgeries -->
+        <div class="info-card">
+            <div class="card-icon">🏥</div>
+            <h3>Free Medical Aid</h3>
+            <p>Providing 100% free medical treatment, vaccinations, and post-op rehabilitation for injured strays.</p>
+        </div>
+
+        <!-- Card 2: Summer Water Bowl Drive -->
+        <div class="info-card">
+            <div class="card-icon">🥣</div>
+            <h3>Summer Water Bowl Drive</h3>
+            <p>Distributing and placing cement water bowls across local areas to keep street animals and birds hydrated in extreme summer heat.</p>
+        </div>
+
+        <!-- Card 3: Winter Dog Houses -->
+        <div class="info-card">
+            <div class="card-icon">❄️</div>
+            <h3>Winter Dog Houses</h3>
+            <p>Building insulated, waterproof shelters and providing warm bedding to protect street dogs during harsh winters.</p>
+        </div>
+
+        <!-- Card 4: Stray Feeding Drives -->
+        <div class="info-card">
+            <div class="card-icon">🩺</div>
+            <h3>Lifesaving Surgeries</h3>
+            <p>Providing free lifesaving surgeries and post-op care for injured strays.</p>
+        </div>
+
+        <!-- Card 5: Adoption & Rehabilitation -->
+        <div class="info-card">
+            <div class="card-icon">🏠</div>
+            <h3>Adoption</h3>
+            <p>Connecting rescued and fully recovered animals with loving forever families through transparent adoption processes.</p>
+        </div>
+    </div>
+</section>
+
+        <!-- Human Welfare Section -->
+<section id="human-welfare">
+    <div class="section-header">
+        <span class="category-tag blue-tag">HUMAN WELFARE</span>
+        <h2>Care & Community</h2>
+    </div>
+    <div class="cards-grid">
+        <!-- Card 1: Winter Essentials in Slums -->
+        <div class="info-card">
+            <div class="card-icon">🧥</div>
+            <h3>Winter Essentials Distribution</h3>
+            <p>Distributing warm clothes, blankets, and thermal essentials to families living in slum areas during harsh winters.</p>
+        </div>
+
+        <!-- Card 2: Festival Celebrations -->
+        <div class="info-card">
+            <div class="card-icon">🪔</div>
+            <h3>Festival Celebrations</h3>
+            <p>Celebrating festivals with underserved communities by sharing sweets, gifts, and moments of genuine happiness.</p>
+        </div>
+
+        <!-- Card 3: Free Health Checkups & Full Medical Support -->
+        <div class="info-card">
+            <div class="card-icon">🩺</div>
+            <h3>Free Health Checkups & Medical Support</h3>
+            <p>Providing free medical consultations, full diagnostic checkups, essential medicines, and complete treatment support.</p>
+        </div>
+
+        <!-- Card 4: Blood Donation Camps -->
+        <div class="info-card">
+            <div class="card-icon">🩸</div>
+            <h3>Blood Donation Drives</h3>
+            <p>Organizing voluntary blood donation camps in collaboration with local hospitals to save lives in emergencies.</p>
+        </div>
+
+        <!-- Card 5: Plantation Drives -->
+        <div class="info-card">
+            <div class="card-icon">🌱</div>
+            <h3>Plantation Drives</h3>
+            <p>Hosting community tree-planting campaigns to promote green cover, cleaner air, and environmental sustainability.</p>
+        </div>
+
+        <!-- Card 6: Essential Distribution Drives -->
+        <div class="info-card">
+            <div class="card-icon">📦</div>
+            <h3>Essential Distribution Drives</h3>
+            <p>Regularly distributing rations, hygiene kits, and daily necessity supplies to underprivileged households.</p>
+        </div>
+    </div>
+</section>
+
+        <!-- Photo Gallery -->
+        <section id="gallery">
+    <h2>Our Impact Gallery</h2>
+    <p class="section-subtext">Visual moments captured from our ground operations and rescue missions</p>
+
+    <!-- Filter Buttons -->
+    <div class="gallery-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="rescues">Rescue Moments</button>
+        <button class="filter-btn" data-filter="volunteers">Volunteers</button>
+        <button class="filter-btn" data-filter="camps">Camps</button>
+        <button class="filter-btn" data-filter="joy">Servings of Joy and Care</button>
+    </div>
+
+    <!-- Masonry Grid -->
+    <div class="masonry-grid">
+        <!-- Item 1: Rescue stray dog -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic7.jpeg" alt="Rescue Moment">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>Emergency Stray Dog Rescue</p>
+            </div>
+        </div>
+
+        <!-- Item 2: winter clothes Distribution -->
+        <div class="masonry-item joy">
+            <img src="/static/pic14.jpeg" alt="Food Drive">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Winter essentials Distribution</span>
+                <p>Distributing Hope In Winters</p>
+            </div>
+        </div>
+        <!-- Item 3: ice cream Distribution -->
+        <div class="masonry-item joy">
+            <img src="/static/pic18.jpeg" alt="Ice Cream Distribution">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Ice Cream Distribution</span>
+                <p>Pleasure of Cool Delight With Kids</p>
+            </div>
+        </div>
+
+        <!-- Item 4: Volunteers -->
+        <div class="masonry-item volunteers">
+            <img src="/static/pic38.jpeg" alt="Volunteers at Work">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Our Volunteers</span>
+                <p>Helping Build a Greater World With Ek Aasra</p>
+            </div>
+        </div>
+
+        <!-- Item 5: Volunteers -->
+        <div class="masonry-item volunteers">
+            <img src="/static/pic23.jpeg" alt="Volunteers at Work">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Young Volunteers</span>
+                <p>Helping Build a Green Community</p>
+            </div>
+        </div>
+
+        <!-- Item 6: Medical Camps -->
+        <div class="masonry-item camps">
+            <img src="/static/pic26.jpeg" alt="Medical Camp">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Blood Donation Camps</span>
+                <p>Free Camps for donations</p>
+            </div>
+        </div>
+
+        <!-- Item 7: Mcds  feast -->
+        <div class="masonry-item joy">
+            <img src="/static/pic17.jpeg" alt="Mcdonalds Time Shared with kids">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Special Moments With Slum Kids</span>
+                <p>Hosting a Feast at Mcdonalds</p>
+            </div>
+        </div>
+        <!-- Item 8: rescue cows -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic10.jpeg" alt="Emergency Rescue">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>Emergency Stray Cow Rescue</p>
+            </div>
+        </div>
+
+        <!-- Item 9: Volunteers -->
+        <div class="masonry-item camps">
+            <img src="/static/pic15.jpeg" alt="Volunteer Team">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Plantation Drives</span>
+                <p>Plantating Positivity</p>
+            </div>
+        </div>
+
+        <!-- Item 10: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic20.png" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>Emergency Surgeries</p>
+            </div>
+        </div>
+        <!-- Item 11: sewing machines Distribution -->
+        <div class="masonry-item joy">
+            <img src="/static/pic19.jpeg" alt="Mcdonalds Time Shared with kids">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Stitching Hope</span>
+                <p>Happy Womens Day</p>
+            </div>
+        </div>
+         <!-- Item 12: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic22.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Winter Dog Houses</span>
+                <p>Building safe Havens for Strays</p>
+            </div>
+        </div>
+        
+        <!-- Item 13: Rescue Moments -->
+        <div class="masonry-item joy">
+            <img src="/static/pic25.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Green Earth Drive</span>
+                <p>Growing a Sustainable Future</p>
+            </div>
+        </div>
+
+         <!-- Item 14: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic2.png" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Severe Injuries</span>
+                <p>Helping Stray Cows</p>
+            </div>
+        </div>
+
+         <!-- Item 15: Rescue Moments -->
+        <div class="masonry-item volunteers">
+            <img src="/static/pic33.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Mrs Jaspreet Maam</span>
+                <p>Our Benevolent President</p>
+            </div>
+        </div>
+
+         <!-- Item 16: Rescue Moments -->
+        <div class="masonry-item volunteers">
+            <img src="/static/pic31.jpeg" alt="Ek Asara Team">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Ek Aasara Team</span>
+                <p>Builders Building A Great society</p>
+            </div>
+        </div>
+
+         <!-- Item 17: Rescue Moments -->
+        <div class="masonry-item volunteers">
+            <img src="/static/pic30.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Spreading Hope</span>
+                <p>Crafting Futures</p>
+            </div>
+        </div>
+
+         <!-- Item 18: Rescue Moments -->
+        <div class="masonry-item camps">
+            <img src="/static/pic29.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Adoption drives</span>
+                <p>Finding Warm Homes for Dogs</p>
+            </div>
+        </div>
+
+
+         <!-- Item 19: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic27.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>emergency rescues</p>
+            </div>
+        </div>
+
+        <!-- Item 20: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic28.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>emergency rescues</p>
+            </div>
+        </div>
+
+
+        <!-- Item 21: Rescue Moments -->
+        <div class="masonry-item joy">
+            <img src="/static/pic32.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Hotel Trip with Kids </span>
+                <p>Dining In the Hotel</p>
+            </div>
+        </div>
+
+        <!-- Item 22: Rescue Moments -->
+        <div class="masonry-item camps">
+            <img src="/static/pic35.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Awareness Camps</span>
+                <p>Distributing Essentials </p>
+            </div>
+        </div>
+
+        <!-- Item 23: Rescue Moments -->
+        <div class="masonry-item camps">
+            <img src="/static/pic36.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Awaring young Girls</span>
+                <p>Distribution of Pads</p>
+            </div>
+        </div>
+
+
+        <!-- Item 24: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic37.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>emergency rescues</p>
+            </div>
+        </div>
+
+
+         <!-- Item 25: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic39.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>emergency rescues of stray dogs</p>
+            </div>
+        </div>
+
+
+         <!-- Item 26: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic40.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescuing A Crow</span>
+                <p>emergency rescues of Birds</p>
+            </div>
+        </div>
+
+
+         <!-- Item 27: Rescue Moments -->
+        <div class="masonry-item camps">
+            <img src="/static/pic41.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Summer Water Bowls Distribution</span>
+                <p>Animals essentials Camps</p>
+            </div>
+        </div>
+
+
+
+         <!-- Item 28: Rescue Moments -->
+        <div class="masonry-item volunteers">
+            <img src="/static/pic24.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Driven Spirits</span>
+                <p>Providing Life-Saving Water Bowls</p>
+            </div>
+        </div>
+
+
+
+         <!-- Item 29: Rescue Moments -->
+        <div class="masonry-item camps">
+            <img src="/static/pic42.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Empowerment Camp</span>
+                <p>Gifting Independence: Women's Day Livelihood Drive</p>
+            </div>
+        </div>
+
+
+
+         <!-- Item 30: Rescue Moments -->
+        <div class="masonry-item camps">
+            <img src="/static/pic43.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Summer Treats</span>
+                <p>Spreading Smiles: Ice Cream Drive for Kids</p>
+            </div>
+        </div>
+
+
+
+         <!-- Item 31: Rescue Moments -->
+        <div class="masonry-item joy">
+            <img src="/static/pic44.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Generations of Care</span>
+                <p>Uniting Generations for Animal Welfare</p>
+            </div>
+        </div>
+
+
+         <!-- Item 32: Rescue Moments -->
+        <div class="masonry-item camps">
+            <img src="/static/pic45.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Distributing Ice Cream</span>
+                <p>In Pingla Ghar</p>
+            </div>
+        </div>
+
+        <!-- Item 33: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic46.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Rescue Moments</span>
+                <p>emergency rescuing a small cat</p>
+            </div>
+        </div>
+
+        <!-- Item 34: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic47.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Gau Seva</span>
+                <p>Nurturing Innocent Lives: Newborn Calf Care</p>
+            </div>
+        </div>
+
+        <!-- Item 35: Rescue Moments -->
+        <div class="masonry-item rescues">
+            <img src="/static/pic48.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Emergency Aid</span>
+                <p>Emergency Medical Aid for Injured Puppy</p>
+            </div>
+        </div>
+
+
+        <!-- Item 36: Rescue Moments -->
+        <div class="masonry-item joy">
+            <img src="/static/pic4.png" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Pure Affection</span>
+                <p>From Rescue to Unconditional Love</p>
+            </div>
+        </div>
+
+
+        <!-- Item 37: Rescue Moments -->
+        <div class="masonry-item joy">
+            <img src="/static/pic1.png" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Gau Seva</span>
+                <p>Gentle Care & Comfort for Street Cattle</p>
+            </div>
+        </div>
+
+
+        <!-- Item 38: Rescue Moments -->
+        <div class="masonry-item joy">
+            <img src="/static/pic49.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Cozy & Loved</span>
+                <p>Spreading Warmth & Love to Strays</p>
+            </div>
+        </div>
+
+        <!-- Item 39: Rescue Moments -->
+        <div class="masonry-item volunteers">
+            <img src="/static/pic50.jpeg" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Green Warriors</span>
+                <p>Uniting Hands for a Greener Tomorrow</p>
+            </div>
+        </div>
+
+
+        <!-- Item 40: Rescue Moments -->
+        <div class="masonry-item joy">
+            <img src="/static/pic51.png" alt="Animal surgeries">
+            <div class="gallery-overlay">
+                <span class="gallery-badge">Special Moments</span>
+                <p>Celebrating Festivals</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+        
+
+    
+
+        <!-- Donate & Support Section -->
+<section id="donate">
+    <h2>Donate & Make an Impact</h2>
+    <p class="section-subtext">Choose an amount or scan the QR code to support our ongoing rescue efforts.</p>
+
+    <!-- Impact Tier Cards -->
+    <div class="donation-tiers">
+        
+
+        <div class="tier-card featured-tier">
+            <span class="popular-badge">Most Popular</span>
+            <span class="tier-amount">₹500</span>
+            <h3>Medical Care</h3>
+            <p>Covers basic first-aid, vaccinations, and essential medicine for an injured stray.</p>
+        </div>
+
+        <div class="tier-card">
+            <span class="tier-amount">₹1,000</span>
+            <h3>Emergency Rescue</h3>
+            <p>Funds emergency transport, vet consultation, and immediate critical care.</p>
+        </div>
+
+        <div class="tier-card">
+            <span class="tier-amount">₹5,000</span>
+            <h3>Emergency Rescue</h3>
+            <p>Provides life-saving surgical intervention, anesthesia, medication, and post-op care for severely injured stray animals.</p>      </div>
+        
+    </div>
+    <!-- Celebrate & Sponsor Section -->
+<div class="celebrate-sponsorship">
+    <div class="celebrate-header">
+        <span class="celebrate-badge">🎉 Sponsor an Activity</span>
+        <h3>Make Your Special Days Truly Meaningful</h3>
+        <p>Transform your celebrations into acts of kindness and create a lasting impact in the lives of those who need it most through Ek AASRA Welfare Society.</p>
+    </div>
+
+    <div class="celebrate-grid">
+        <!-- Birthday Card -->
+        <div class="celebrate-card">
+            <div class="celebrate-icon">🎂</div>
+            <h4>Birthday Meal Drive</h4>
+            <p>Make your birthday truly meaningful by sponsoring a meal for stray animals or underprivileged individuals.</p>
+        </div>
+
+        <!-- Anniversary Card -->
+        <div class="celebrate-card">
+            <div class="celebrate-icon">💍</div>
+            <h4>Anniversary Celebrations</h4>
+            <p>Celebrate your milestone by sponsoring health camps, wholesome meals, or vital medications for those in need.</p>
+        </div>
+
+        <!-- In Loving Memory Card -->
+        <div class="celebrate-card">
+            <div class="celebrate-icon">🕊️</div>
+            <h4>In Loving Memory</h4>
+            <p>Honor and remember a loved one by funding essential medical care, feeding drives, or rescue operations in their memory.</p>
+        </div>
+    </div>
+
+    <div class="celebrate-cta">
+        <p>Want to dedicate a drive on a specific date or special occasion?</p>
+        <a href="#contacts" class="btn-celebrate">Schedule Your Drive</a>
+    </div>
+</div>
+
+    <!-- QR Code & Direct Payment Box -->
+    <div class="qr-donation-box">
+        <div class="qr-code-wrapper">
+            <img src="{{ url_for('static', filename='qr.jpeg') }}" alt="Ek Aasra UPI QR Code" width="160">
+            <p class="qr-hint">Scan with any UPI App (GPay, PhonePe, Paytm)</p>
+        </div>
+        
+        <div class="bank-details">
+            <h4>Direct Transfer / UPI</h4>
+            <p><strong>UPI ID:</strong> <code>ekaasra09@oksbi</code></p>
+            <p><strong>Account Name:</strong>EK AASRA</p>
+            <p><strong>Bank:</strong>HDFC Bank</p>
+            <p><strong>IFSC:</strong>HDFC0001391</p>
+            <p class="tax-note">✨ All donations are eligible for tax exemption under Section 80G.</p>
+        </div>
+    </div>
+</section>
+
+        <!-- Volunteer Application Section -->
+<section id="volunteer" class="volunteer-section">
+    <div class="volunteer-container">
+        
+        <!-- Section Header -->
+        <div class="section-header">
+            <span class="category-tag">JOIN OUR TEAM</span>
+            <h2>Become a Volunteer</h2>
+            <p>Join Ek Aasra in making a direct impact. Fill out the form below to register as an active volunteer for our ground drives and care initiatives.</p>
+        </div>
+
+        <!-- Form Wrapper -->
+        <div class="volunteer-form-card">
+            <form id="volunteerForm" action="/submit-volunteer" method="POST">
+                
+                <div class="form-group">
+                    <label for="volunteer-name">Full Name *</label>
+                    <input type="text" id="volunteer-name" name="name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="volunteer-phone">Phone Number *</label>
+                    <input type="tel" id="volunteer-phone" name="phone" placeholder="e.g. +91 9876543210" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="volunteer-skills">Skills & Expertise</label>
+                    <input type="text" id="volunteer-skills" name="skills" placeholder="e.g. First Aid, Animal Rescue, Driving, Event Support">
+                </div>
+
+                <div class="form-group">
+                    <label for="volunteer-availability">Availability</label>
+                    <input type="text" id="volunteer-availability" name="availability" placeholder="e.g. Weekends, Evenings, On-Call">
+                </div>
+
+                <button type="submit" class="submit-volunteer-btn">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Application
+                </button>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+        <!-- Contact Section -->
+        <section id="contacts">
+            <h2>Contact Us</h2>
+            <ul>
+                <li><strong>Phone:</strong> +91 9814498279 </li>
+                <li><strong>Email:</strong> ekaasra09@gmail.com</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- Professional Footer -->
+<footer id="main-footer">
+    <div class="footer-container">
+        
+        <!-- Column 1: About NGO & Compliance -->
+        <div class="footer-col about-col">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Ek Aasra Logo">
+                <h3>EK AASRA</h3>
+            </div>
+            <p class="footer-about-text">
+                Dedicated to extending a compassionate hand to street animals in distress and supporting local communities with care, shelter, and dignity.
+            </p>
+            <!-- Legal & Compliance Details -->
+            <div class="compliance-box">
+                <p><strong>Reg No:</strong>DIC/JAL/OL/396</p>
+                <p><strong>PAN:</strong> AADAE0676J</p>
+                <p><strong>Tax Exemptions:</strong> 80G & 12A Certified</p>
+            </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col links-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#mission-card">Our Mission</a></li>
+                <li><a href="#animal-welfare">Animal Welfare</a></li>
+                <li><a href="#human-welfare">Human Welfare</a></li>
+                <li><a href="#gallery">Impact Gallery</a></li>
+                <li><a href="#donate">Donate & Support</a></li>
+                <li><a href="#volunteer">Become a Volunteer</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Contact & Social Media -->
+        <div class="footer-col contact-col">
+            <h4>Contact Us</h4>
+            <ul class="contact-list">
+                <li>
+                    <span class="icon">📞</span> 
+                    <span><strong>Phone:</strong> +91 98144 98279</span>
+                </li>
+                <li>
+                    <span class="icon">✉️</span> 
+                    <span><strong>Email:</strong> ekaasra09@gmail.com</span>
+                </li>
+                <li>
+                    <span class="icon">📍</span> 
+                    <span><strong>Address:</strong> Shakti nagar ,Jalandhar</span>
+                </li>
+            </ul>
+
+            <h4 class="social-title">Follow Our Work</h4>
+            <div class="social-links">
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook">🌐 Facebook</a>
+                <a href="https://www.instagram.com/ekaasrawelfaresociety?utm_source=qr" target="_blank" aria-label="Instagram">📸 Instagram</a>
+            </div>
+        </div>
+
+        <!-- Column 4: Google Map Embed -->
+        <div class="map-embed-container">
+    <iframe 
+        src="https://maps.google.com/maps?q=Wg%2077,%20Islamganj,%20Near%20Shakti%20Nagar%20Balmike%20Ashram,%20Jalandhar,%20Punjab%20144001&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+        width="100%" 
+        height="350" 
+        style="border:0; border-radius:12px;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+
+    </div>
+
+    <!-- Bottom Bar / Copyright -->
+    <div class="footer-bottom">
+        <p>&copy; 2026 Ek Aasra NGO. All Rights Reserved. | Donors receive tax benefits under Section 80G.</p>
+        <p class="developer-credit">Designed & Developed with ❤️ by <strong>Siya Mahajan</strong></p>
+    </div>
+</footer>
+
+    <!-- Navbar Scroll Script -->
+    <script>
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+    <script>
+    // Navbar Scroll Script
+    window.addEventListener('scroll', function () {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // Count-Up Animation Script for Statistics
+    const statsSection = document.getElementById('stats-section');
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let animated = false;
+
+    function startCountUp() {
+        statNumbers.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const prefix = counter.getAttribute('data-prefix') || '';
+            const suffix = counter.getAttribute('data-suffix') || '';
+            const duration = 2000; // Animation duration in milliseconds
+            const frameRate = 1000 / 60; // 60 FPS
+            const totalFrames = Math.round(duration / frameRate);
+            let frame = 0;
+
+            const countUp = setInterval(() => {
+                frame++;
+                // Ease-out calculation for smooth slowing down at the end
+                const progress = frame / totalFrames;
+                const currentCount = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+
+                counter.innerText = `${prefix}${currentCount}${suffix}`;
+
+                if (frame === totalFrames) {
+                    clearInterval(countUp);
+                    counter.innerText = `${prefix}${target}${suffix}`;
+                }
+            }, frameRate);
+        });
+    }
+
+    // Trigger count-up when section comes into view
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+                startCountUp();
+                animated = true; // Prevents re-triggering
+            }
+        });
+    }, { threshold: 0.3 });
+
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+</script>
+<script>
+//Masonry Gallery Category Filter
+const filterBtns = document.querySelectorAll('.filter-btn');
+const galleryItems = document.querySelectorAll('.masonry-item');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterBtns.forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        btn.classList.add('active');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        galleryItems.forEach(item => {
+            if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+
+
+</script>
+
+<script>
+document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
+    e.preventDefault(); // Prevents normal page refresh
+
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch('/submit-volunteer', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.status === 'success') {
+            alert('🎉 ' + result.message); // Shows pop-up message!
+            this.reset(); // Clears form fields
+        } else {
+            alert('❌ ' + (result.message || 'Submission failed.'));
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('❌ Network error. Please check your connection.');
+    }
+});
+</script>
+</body>
+</html>
