@@ -2464,5 +2464,88 @@ document.getElementById('volunteerForm').addEventListener('submit', async functi
     }
 });
 </script>
+
+<div id="chat-widget" style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; font-family: 'Poppins', sans-serif;">
+    <!-- Toggle Button -->
+    <button id="chat-toggle" style="background-color: #A82226; color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 30px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.25); display: flex; align-items: center; gap: 8px;">
+        💬 Chat with Aasra AI
+    </button>
+    
+    <!-- Chat Window Box -->
+    <div id="chat-box" style="display: none; width: 330px; height: 430px; background: #FFFFFF; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; margin-top: 12px; border: 1px solid #E0E0E0;">
+        <!-- Header -->
+        <div style="background: #A82226; color: white; padding: 14px; font-weight: bold; font-size: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>🐾 Aasra AI Assistant</span>
+            <span id="chat-close" style="cursor: pointer; font-size: 1.2rem;">&times;</span>
+        </div>
+        
+        <!-- Messages Area -->
+        <div id="chat-messages" style="flex: 1; padding: 12px; overflow-y: auto; font-size: 0.88rem; display: flex; flex-direction: column; gap: 10px; background-color: #FAF9F6;">
+            <div style="background: #EAEAEA; color: #333; padding: 8px 12px; border-radius: 8px; max-width: 85%;">
+                Hello! I am Aasra AI. How can I help you today regarding our rescue operations, volunteering, or donations?
+            </div>
+        </div>
+        
+        <!-- Input Form -->
+        <div style="display: flex; border-top: 1px solid #EEEEEE; padding: 8px; background: #FFFFFF;">
+            <input type="text" id="chat-input" placeholder="Type a message..." style="flex: 1; border: 1px solid #CCCCCC; padding: 8px 12px; border-radius: 20px; outline: none; font-size: 0.85rem;">
+            <button id="send-btn" style="background: #232B68; color: white; border: none; padding: 8px 14px; border-radius: 20px; margin-left: 6px; cursor: pointer; font-weight: 600;">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatBox = document.getElementById('chat-box');
+    const chatClose = document.getElementById('chat-close');
+    const sendBtn = document.getElementById('send-btn');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    chatToggle.addEventListener('click', () => {
+        chatBox.style.display = chatBox.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    chatClose.addEventListener('click', () => {
+        chatBox.style.display = 'none';
+    });
+
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        // Render User Message
+        chatMessages.innerHTML += `<div style="background: #232B68; color: white; padding: 8px 12px; border-radius: 8px; align-self: flex-end; max-width: 85%;">${text}</div>`;
+        chatInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Render Typing Indicator
+        const loadingId = 'loading-' + Date.now();
+        chatMessages.innerHTML += `<div id="${loadingId}" style="background: #EAEAEA; color: #666; padding: 8px 12px; border-radius: 8px; align-self: flex-start; font-style: italic;">Aasra AI is typing...</div>`;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+            const data = await res.json();
+            
+            // Remove Typing Indicator
+            document.getElementById(loadingId).remove();
+            
+            // Render Bot Response
+            chatMessages.innerHTML += `<div style="background: #F1F1F1; color: #A82226; padding: 8px 12px; border-radius: 8px; align-self: flex-start; max-width: 85%; border-left: 3px solid #A82226;"><b>Aasra AI:</b> ${data.response}</div>`;
+        } catch (err) {
+            document.getElementById(loadingId).remove();
+            chatMessages.innerHTML += `<div style="color: red; align-self: flex-start;">Failed to connect to assistant.</div>`;
+        }
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+</script>
 </body>
 </html>
