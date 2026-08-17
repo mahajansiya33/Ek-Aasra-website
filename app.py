@@ -226,7 +226,7 @@ def chat():
 
     try:
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-2.0-flash',  # <-- UPDATED MODEL NAME HERE
             contents=user_message,
             config={
                 'system_instruction': NGO_SYSTEM_INSTRUCTION
